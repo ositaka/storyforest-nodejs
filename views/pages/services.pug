@@ -1,0 +1,27 @@
+extends ../base.pug
+
+block variables
+  - var template = 'services'
+
+block content
+  .services(data-background="#1a1a1a" data-color="#fff")
+    .services__wrapper
+      
+      .services__hero
+        .services__hero__header
+          h2.services__title(data-animation="title")!=services.data.title.replace(/\n/g, '<br>')
+          .services__text
+            p.services__description(data-animation="title")!=services.data.description
+              br
+              a.services__button(href="#services")=services.data.button
+            //- div(data-animation="title")
+
+      .services__list#services
+        .services__list__grid
+          each service in service_pqges
+            a.services__list__item(href=`/${lang}/${service.data.parent_page.uid}/${service.uid}/`)
+              h3.services__list__item__title(data-animation="title")!=service.data.title.replace(/\n/g, '<br>')
+              .services__list__item__description!=PrismicDOM.RichText.asHtml(service.data.description)
+              .services__list__item__price(data-animation="title")=`€${service.data.price}`
+
+      include ../partials/footer

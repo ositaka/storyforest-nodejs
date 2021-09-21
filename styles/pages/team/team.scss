@@ -1,0 +1,136 @@
+.team {
+  @extend %page;
+
+  // background: $color-grey-light;
+  // color: $color-grey-dark;
+}
+
+.team__wrapper {
+  padding-top: 2rem;
+}
+
+.team__hero {
+  @extend %full-height;
+}
+
+.team__hero__wrapper {
+  @extend %two-cols;
+
+  align-items: center;
+  width: 146rem;
+
+  @include media('<phone') {
+    display: block;
+    width: 88%;
+  }
+}
+
+.team__left {
+  @extend %two-cols__left;
+
+  text-align: right;
+  width: 56rem;
+
+  @include media('<phone') {
+    width: 100%;
+  }
+}
+
+.team__right {
+  @extend %two-cols__right;
+
+  width: 74rem;
+
+  @include media('<phone') {
+    width: 100%;
+  }
+}
+
+.team__topics {
+  @extend %title-86;
+
+  margin: 2rem 0 4rem;
+}
+
+.team__button {
+  @extend %button-arrow__down;
+
+  display: block;
+  margin-top: 9rem;
+}
+
+.team__media__image {
+  width: 74rem;
+  margin-bottom: 4.5rem;
+
+  @include media('<phone') {
+    width: 100%;
+  }
+}
+
+.team__persons {
+  @extend %full-height;
+
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: auto;
+  width: 126rem;
+
+  @include media('<phone') {
+    display: block;
+    padding-top: 20rem;
+    margin-bottom: 30rem;
+    margin-top: -20rem;
+    width: 88%;
+  }
+}
+
+.team__persons__item {
+  width: 52rem;
+
+  @include media('<phone') {
+    margin-bottom: 18rem;
+    width: 100%;
+  }
+}
+
+.team__person__name {
+  @extend %title-32;
+
+  @include media('<phone') {
+    font-size: 4.8rem;
+  }
+}
+
+.team__person__role {
+  @extend %title-20;
+
+  margin-bottom: 3.5rem;
+  margin-top: 0.5rem;
+
+  @include media('<phone') {
+    font-size: 3.8rem;
+    margin-bottom: 6rem;
+    margin-top: 1rem;
+  }
+}
+
+.team__person__bio {
+  @extend %text-32;
+
+  letter-spacing: 0.05rem;
+
+  & p {
+    margin-bottom: 3.5rem;
+
+    @include media('<phone') {
+      margin-bottom: 6rem;
+    }
+  }
+
+  & a {
+    text-decoration: underline;
+  }
+}

@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700&amp;display=swap');
+
+@import './base/reset';
+
+@import './utils/variables';
+@import './utils/functions';
+@import './utils/mixins';
+@import './utils/vendors';
+@import './utils/responsive';
+
+@import './shared/animations';
+@import './shared/buttons';
+@import './shared/grids';
+@import './shared/forms';
+@import './shared/icons';
+@import './shared/links';
+@import './shared/pages';
+@import './shared/titles';
+@import './shared/transitions';
+
+@import './base/fonts';
+@import './base/base';
+
+@import './components/preloader';
+
+@import './layout/navigation';
+@import './layout/footer';
+
+@import './pages/intro/intro';
+
+@import './pages/home/home';
+
+@import './pages/pages/pages';
+
+@import './pages/team/team';
+
+@import './pages/work/work';
+@import './pages/work_page/work_page';
+
+@import './pages/services/services';
+@import './pages/service_page/service_page';
+
+@import './pages/contacts/contacts';
+
+// @import './pages/_404/_404';

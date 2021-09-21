@@ -1,0 +1,93 @@
+.services {
+  @extend %page;
+
+  // background: $color-grey-light;
+  // color: $color-grey-dark;
+}
+
+.services__wrapper {
+}
+
+.services__hero {
+  @extend %full-height;
+
+  margin: auto;
+  width: 140rem;
+}
+
+.services__hero__header {
+  display: flex;
+
+  @include media('<phone') {
+    display: block;
+    width: 88%;
+  }
+}
+
+.services__title {
+  @extend %title-100;
+
+  margin-right: 12rem;
+  width: 60.7rem;
+
+  @include media('<phone') {
+    margin-right: 0;
+    width: 100%;
+  }
+}
+
+.services__description {
+  font-size: 2.08rem;
+  line-height: 3.45rem;
+  margin-top: 2.2rem;
+  padding-right: 2rem;
+  width: 60.7rem;
+
+  @include media('<phone') {
+    font-size: 3.2rem;
+    line-height: 6rem;
+    letter-spacing: -0.02rem;
+    margin-top: 6rem;
+    margin-bottom: 3rem;
+    padding-right: 0;
+    width: 100%;
+  }
+}
+
+.services__button {
+  @extend %button-arrow__down;
+
+  display: block;
+  padding: 3.2rem 0;
+
+  @include media('<phone') {
+    margin-top: 3rem;
+    margin-bottom: 6rem;
+  }
+}
+
+.services__list {
+  @extend %full-height;
+}
+.services__list__grid {
+  display: flex;
+  justify-content: space-between;
+  margin: auto;
+  width: 140rem;
+}
+
+.services__list__item {
+  width: 45%;
+}
+
+.services__list__item__title {
+  @extend %title-44;
+}
+
+.services__list__item__description {
+  margin: 4rem 0 2rem;
+}
+
+.services__list__item__price {
+  @extend %title-25;
+}
