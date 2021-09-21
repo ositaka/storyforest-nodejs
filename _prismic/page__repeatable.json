@@ -6,10 +6,32 @@
         "label": "UID"
       }
     },
+    "parent_page": {
+      "type": "Link",
+      "config": {
+        "select": "document",
+        "customtypes": ["the_media", "page"],
+        "label": "Parent Page"
+      }
+    },
     "title": {
       "type": "Text",
       "config": {
         "label": "Title"
+      }
+    },
+    "button": {
+      "type": "Text",
+      "config": {
+        "label": "Button"
+      }
+    },
+    "body": {
+      "type": "Slices",
+      "fieldset": "Slice zone",
+      "config": {
+        "labels": {},
+        "choices": {}
       }
     }
   },

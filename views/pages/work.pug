@@ -7,8 +7,6 @@ block content
   .work(data-background="#3131f1" data-color="#fff")
     .work__wrapper
       .work__hero.is-fixed
-        .bubble
-          lottie-interactive(path="/bubble.json" autoplay loop view-box="0 0 1920 1080" interaction="scroll")
         h2.work__title(data-animation="title")!=work.data.title.replace(/\n/g, '<br>')
       .work__description!=PrismicDOM.RichText.asHtml(work.data.description).replace(/<p>/g, '<p data-animation="paragraph">')
       

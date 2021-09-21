@@ -2,7 +2,6 @@ import Page from 'classes/Page'
 import Detection from 'classes/Detection'
 
 import { getOffset } from 'utils/dom'
-import { LottieInteractive } from 'lottie-interactive'
 export default class Home extends Page {
     constructor() {
         super({

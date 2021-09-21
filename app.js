@@ -36,42 +36,55 @@ const handleLinkResolver = (doc) => {
   }
 
   if (doc.type === 'home') {
-    return `/${doc.lang}/`;
+    if (doc.lang === 'en-gb') {
+      return `/en/`;
+    }
+    else if (doc.lang === 'pt-pt') {
+      return `/pt/`;
+    }
   }
 
   if (doc.type === 'page') {
-    return `/${doc.lang}/${doc.uid}/`
+    if (doc.lang === 'en-gb') {
+      return (doc.data.parent_page.id ? `/en/${doc.data.parent_page.uid}/${doc.uid}/` : `/en/${doc.uid}/`)
+    }
+    else if (doc.lang === 'pt-pt') {
+      return (doc.data.parent_page.id ? `/pt/${doc.data.parent_page.uid}/${doc.uid}/` : `/pt/${doc.uid}/`)
+    }
   }
 
-  if (doc.type === 'work') {
-    return `/${doc.lang}/${doc.uid}/`;
-  }
+  // if (doc.type === 'work') {
+  //   return `/${doc.lang}/${doc.uid}/`;
+  // }
 
-  if (doc.type === 'work_page') {
-    return (doc.data.parent_page.id ? `/${doc.lang}/${doc.data.parent_page.uid}/${doc.uid}/` : `/${doc.lang}/${doc.uid}/`)
-  }
+  // if (doc.type === 'work_page') {
+  // return (doc.data.parent_page.id ? `/${doc.lang}/${doc.data.parent_page.uid}/${doc.uid}/` : `/${doc.lang}/${doc.uid}/`)
+  // }
 
-  if (doc.type === 'team') {
-    return `/${doc.lang}/${doc.uid}/`;
-  }
+  // if (doc.type === 'team') {
+  //   if (doc.lang === 'pt-pt') {
+  //     return `/pt/${doc.uid}/`;
+  //   }
+  // }
 
   if (doc.type === 'contacts') {
-    return `/${doc.lang}/${doc.uid}/`;
+    if (doc.lang === 'en-gb') {
+      return `/en/${doc.uid}/`;
+    }
+    else if (doc.lang === 'pt-pt') {
+      return `/pt/${doc.uid}/`;
+    }
   }
 
-  if (doc.type === 'services') {
-    return `/${doc.lang}/${doc.uid}/`;
-  }
+  // if (doc.type === 'services') {
+  //   return `/${doc.lang}/${doc.uid}/`;
+  // }
 
-  if (doc.type === 'service_page') {
-    return (doc.data.parent_page.id ? `/${doc.lang}/${doc.data.parent_page.uid}/${doc.uid}/` : `/${doc.lang}/${doc.uid}/`)
-  }
+  // if (doc.type === 'service_page') {
+  //   return (doc.data.parent_page.id ? `/${doc.lang}/${doc.data.parent_page.uid}/${doc.uid}/` : `/${doc.lang}/${doc.uid}/`)
+  // }
 
-  if (doc.type === 'pack') {
-    return (doc.data.parent_page.id ? `/${doc.lang}/${doc.data.parent_page.uid}/${doc.uid}/` : `/${doc.lang}/${doc.uid}/`)
-  }
-
-  return `/${doc.lang}/`;
+  return `/en/`;
 };
 
 app.use((req, res, next) => {
@@ -104,7 +117,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 const handleRequest = async (api, lang) => {
-  const intro = await api.getSingle('intro', { lang });
+  const intro = await api.getSingle('intro');
   const footer = await api.getSingle('footer', { lang });
   const navigation = await api.getSingle('navigation', { lang });
   const preloader = await api.getSingle('preloader', { lang });
@@ -126,11 +139,11 @@ const handleRequest = async (api, lang) => {
 
 
 app.get('/', async (req, res) => {
-  res.redirect('/en-gb')
+  res.redirect('/en/')
 })
 
-app.get('/:lang/', async (req, res) => {
-  const lang = req.params.lang;
+app.get('/en/', async (req, res) => {
+  const lang = 'en-gb';
   const api = await initApi(req);
   const defaults = await handleRequest(api, lang);
 
@@ -165,22 +178,58 @@ app.get('/:lang/', async (req, res) => {
 
 });
 
-app.get('/:lang/:uid/', async (req, res) => {
-  const lang = req.params.lang;
+app.get('/pt/', async (req, res) => {
+  const lang = 'pt-pt';
+  const api = await initApi(req);
+  const defaults = await handleRequest(api, lang);
+
+  const home = await api.getSingle('home', { lang });
+
+  if (home) {
+    altLangs = home.alternate_languages
+    meta = home.data.seo[0]
+
+    // const { results: globals } = await api.query(Prismic.Predicates.at('document.type', 'globals'), { lang })
+    // const { results: packs } = await api.query(Prismic.Predicates.at('document.type', 'pack'), {
+    //   lang,
+    //   orderings: '[my.pack.homepage_order]'
+    // })
+
+    res.render('pages/home', {
+      ...defaults,
+      altLangs,
+      // globals,
+      lang,
+      meta,
+      home,
+      // packs
+    });
+
+  }
+
+  else {
+    console.log("_404")
+    // res.status(404).render("./error_handlers/_404");
+  }
+
+});
+
+app.get('/en/:uid/', async (req, res) => {
+  const lang = 'en-gb';
   const uid = req.params.uid;
   const api = await initApi(req);
   const defaults = await handleRequest(api, lang);
 
   const contacts = await api.getByUID('contacts', uid, { lang });
   const page = await api.getByUID('page', uid, { lang });
-  const services = await api.getByUID('services', uid, { lang });
-  const team = await api.getByUID('team', uid, { lang });
+  // const services = await api.getByUID('services', uid, { lang });
+  // const team = await api.getByUID('team', uid, { lang });
   // const work = await api.getByUID('work', uid, { lang });
 
 
   if (page) {
     if (page.data.parent_page.uid) {
-      res.redirect(`/${page.lang}/${page.data.parent_page.uid}/${page.uid}/`)
+      res.redirect(`/en/${page.data.parent_page.uid}/${page.uid}/`)
     }
 
     const { results: parent_en } = await api.query(Prismic.Predicates.at('document.type', 'page'), { lang: "en-gb" })
@@ -203,39 +252,18 @@ app.get('/:lang/:uid/', async (req, res) => {
     });
   }
 
-  else if (services) {
-    altLangs = services.alternate_languages
-    meta = services.data.seo[0]
+  // else if (team) {
+  //   altLangs = team.alternate_languages
+  //   meta = team.data.seo[0]
 
-    const { results: service_pqges } = await api.query(Prismic.Predicates.at('document.type', 'service_page'), {
-      lang,
-      fetchLinks: 'title',
-      orderings: '[document.first_publication_date]',
-    })
-
-    res.render('pages/services', {
-      ...defaults,
-      altLangs,
-      lang,
-      meta,
-      services,
-      service_pqges,
-    });
-
-  }
-
-  else if (team) {
-    altLangs = team.alternate_languages
-    meta = team.data.seo[0]
-
-    res.render('pages/team', {
-      ...defaults,
-      altLangs,
-      lang,
-      meta,
-      team,
-    });
-  }
+  //   res.render('pages/team', {
+  //     ...defaults,
+  //     altLangs,
+  //     lang,
+  //     meta,
+  //     team,
+  //   });
+  // }
 
   else if (contacts) {
     altLangs = contacts.alternate_languages
@@ -258,32 +286,92 @@ app.get('/:lang/:uid/', async (req, res) => {
     // res.status(404).render("./error_handlers/_404");
   }
 
-  // else if (work) {
-  //   altLangs = work.alternate_languages
-  //   meta = work.data.seo[0]
+});
 
-  //   res.render('pages/work', {
+
+app.get('/pt/:uid/', async (req, res) => {
+  const lang = 'pt-pt';
+  const uid = req.params.uid;
+  const api = await initApi(req);
+  const defaults = await handleRequest(api, lang);
+
+  const contacts = await api.getByUID('contacts', uid, { lang });
+  const page = await api.getByUID('page', uid, { lang });
+  // const services = await api.getByUID('services', uid, { lang });
+  // const team = await api.getByUID('team', uid, { lang });
+  // const work = await api.getByUID('work', uid, { lang });
+
+
+  if (page) {
+    if (page.data.parent_page.uid) {
+      res.redirect(`/pt/${page.data.parent_page.uid}/${page.uid}/`)
+    }
+
+    const { results: parent_en } = await api.query(Prismic.Predicates.at('document.type', 'page'), { lang: "en-gb" })
+    const { results: parent_pt } = await api.query(Prismic.Predicates.at('document.type', 'page'), { lang: "pt-pt" })
+
+    altLangs = page.alternate_languages
+    meta = page.data.seo[0]
+
+    // const { results: globals } = await api.query(Prismic.Predicates.at('document.type', 'globals'), { lang })
+
+    res.render('pages/pages', {
+      ...defaults,
+      altLangs,
+      lang,
+      meta,
+      // globals,
+      page,
+      parent_en,
+      parent_pt
+    });
+  }
+
+  // else if (team) {
+  //   altLangs = team.alternate_languages
+  //   meta = team.data.seo[0]
+
+  //   res.render('pages/team', {
   //     ...defaults,
   //     altLangs,
   //     lang,
   //     meta,
-  //     work,
+  //     team,
   //   });
-
   // }
 
+  else if (contacts) {
+    altLangs = contacts.alternate_languages
+    meta = contacts.data.seo[0]
+
+    // const { results: globals } = await api.query(Prismic.Predicates.at('document.type', 'globals'), { lang })
+
+    res.render('pages/contacts', {
+      ...defaults,
+      altLangs,
+      lang,
+      meta,
+      // globals,
+      contacts,
+    });
+  }
+
+  else {
+    console.log("_404")
+    // res.status(404).render("./error_handlers/_404");
+  }
 
 });
 
 
-app.get('/:lang/:parent_page/:uid/', async (req, res) => {
-  const lang = req.params.lang;
+app.get('/en/:parent_page/:uid/', async (req, res) => {
+  const lang = 'en-gb';
   const api = await initApi(req);
   const defaults = await handleRequest(api, lang);
   const uid = req.params.uid;
 
   // const _404 = await api.getSingle('404', { lang });
-  const service_page = await api.getByUID('service_page', uid, { lang });
+  // const service_page = await api.getByUID('service_page', uid, { lang });
   // const work_page = await api.getByUID('work_page', uid, { lang });
   const page = await api.getByUID('page', uid, { lang });
 
@@ -333,21 +421,85 @@ app.get('/:lang/:parent_page/:uid/', async (req, res) => {
     });
   }
 
-  else if (service_page) {
-    altLangs = service_page.alternate_languages
-    meta = service_page.data.seo[0]
+  // else if (service_page) {
+  //   altLangs = service_page.alternate_languages
+  //   meta = service_page.data.seo[0]
 
-    // const { results: service_pages } = await api.query(Prismic.Predicates.at('document.type', 'service_page'), {
-    //   lang,
-    //   fetchLinks: 'title',
-    //   orderings: '[document.first_publication_date]',
-    // })
+  //   // const { results: service_pages } = await api.query(Prismic.Predicates.at('document.type', 'service_page'), {
+  //   //   lang,
+  //   //   fetchLinks: 'title',
+  //   //   orderings: '[document.first_publication_date]',
+  //   // })
 
+  //   // const { results: globals } = await api.query(Prismic.Predicates.at('document.type', 'globals'), { lang })
+  //   const { results: parent_en } = await api.query(Prismic.Predicates.at('document.type', 'service_page'), { lang: "en-gb" })
+  //   const { results: parent_pt } = await api.query(Prismic.Predicates.at('document.type', 'service_page'), { lang: "pt-pt" })
+
+  //   res.render('pages/service_page', {
+  //     ...defaults,
+  //     // _404,
+  //     altLangs,
+  //     // globals,
+  //     lang,
+  //     meta,
+  //     parent_en,
+  //     parent_pt,
+  //     // service_page,
+  //     // service_pages,
+  //   });
+  // }
+
+  else {
+    console.log("_404")
+    res.status(404).render("pages/_404");
+  }
+});
+
+app.get('/pt/:parent_page/:uid/', async (req, res) => {
+  const lang = 'pt-pt';
+  const api = await initApi(req);
+  const defaults = await handleRequest(api, lang);
+  const uid = req.params.uid;
+
+  // const _404 = await api.getSingle('404', { lang });
+  // const service_page = await api.getByUID('service_page', uid, { lang });
+  // const work_page = await api.getByUID('work_page', uid, { lang });
+  const page = await api.getByUID('page', uid, { lang });
+
+
+  // else if (work_page) {
+  //   altLangs = work_page.alternate_languages
+  //   meta = work_page.data.seo[0]
+
+  //   const { results: parent_en } = await api.query(Prismic.Predicates.at('document.type', 'work_page'), { lang: "en-gb" })
+  //   const { results: parent_pt } = await api.query(Prismic.Predicates.at('document.type', 'work_page'), { lang: "pt-pt" })
+  //   const { results: globals } = await api.query(Prismic.Predicates.at('document.type', 'globals'), { lang })
+
+
+  //   console.log(globals)
+
+  //   res.render('pages/work_page', {
+  //     ...defaults,
+  //     _404,
+  //     altLangs,
+  //     globals,
+  //     lang,
+  //     meta,
+  //     parent_en,
+  //     parent_pt,
+  //     work_page,
+  //   });
+  // }
+
+  if (page) {
+    altLangs = page.alternate_languages
+    meta = page.data.seo[0]
+
+    const { results: parent_en } = await api.query(Prismic.Predicates.at('document.type', 'page'), { lang: "en-gb" })
+    const { results: parent_pt } = await api.query(Prismic.Predicates.at('document.type', 'page'), { lang: "pt-pt" })
     // const { results: globals } = await api.query(Prismic.Predicates.at('document.type', 'globals'), { lang })
-    const { results: parent_en } = await api.query(Prismic.Predicates.at('document.type', 'service_page'), { lang: "en-gb" })
-    const { results: parent_pt } = await api.query(Prismic.Predicates.at('document.type', 'service_page'), { lang: "pt-pt" })
 
-    res.render('pages/service_page', {
+    res.render('pages/pages', {
       ...defaults,
       // _404,
       altLangs,
@@ -356,10 +508,37 @@ app.get('/:lang/:parent_page/:uid/', async (req, res) => {
       meta,
       parent_en,
       parent_pt,
-      service_page,
-      // service_pages,
+      page,
     });
   }
+
+  // else if (service_page) {
+  //   altLangs = service_page.alternate_languages
+  //   meta = service_page.data.seo[0]
+
+  //   // const { results: service_pages } = await api.query(Prismic.Predicates.at('document.type', 'service_page'), {
+  //   //   lang,
+  //   //   fetchLinks: 'title',
+  //   //   orderings: '[document.first_publication_date]',
+  //   // })
+
+  //   // const { results: globals } = await api.query(Prismic.Predicates.at('document.type', 'globals'), { lang })
+  //   const { results: parent_en } = await api.query(Prismic.Predicates.at('document.type', 'service_page'), { lang: "en-gb" })
+  //   const { results: parent_pt } = await api.query(Prismic.Predicates.at('document.type', 'service_page'), { lang: "pt-pt" })
+
+  //   res.render('pages/service_page', {
+  //     ...defaults,
+  //     // _404,
+  //     altLangs,
+  //     // globals,
+  //     lang,
+  //     meta,
+  //     parent_en,
+  //     parent_pt,
+  //     service_page,
+  //     // service_pages,
+  //   });
+  // }
 
   else {
     console.log("_404")
