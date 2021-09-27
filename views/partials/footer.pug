@@ -9,7 +9,10 @@ footer.footer
     .footer__right
       .footer__navigation
         each link in footer.data.navigation
-          a.footer__navigation__link(href=`/${link.link.lang}/${link.link.uid}/` data-animation="title")=link.link_text
+          if ( lang === 'en-gb' )
+            a.footer__navigation__link(href=`/en/${link.link.uid}/` data-animation="title")=link.link_text
+          if ( lang === 'pt-pt' )
+            a.footer__navigation__link(href=`/pt/${link.link.uid}/` data-animation="title")=link.link_text
 
       .footer__address 
         p(data-animation="title")=footer.data.address_title

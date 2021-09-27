@@ -83,7 +83,8 @@ export default class Navigation extends Component {
         if (!anchor) return
 
         // get url from click
-        if (anchor.getAttribute('href') === element.getAttribute('href').replace(/http:\/\/localhost:3030/g, '')) {
+        element.classList.remove('active')
+        if (anchor.getAttribute('href') === element.getAttribute('href').replace(/http:\/\/localhost:3000/g, '')) {
           element.classList.add('active')
         }
       })
@@ -91,7 +92,7 @@ export default class Navigation extends Component {
 
     // check current page on window load
     mapEach(this.elements.menuLinks, element => {
-      if (window.location.href.replace(/http:\/\/localhost:3030/g, '') === element.getAttribute('href')) {
+      if (window.location.href.replace(/http:\/\/localhost:3000/g, '') === element.getAttribute('href')) {
         element.classList.add('active')
 
         // in case of subnav item,
