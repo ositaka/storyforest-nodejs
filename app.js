@@ -44,7 +44,7 @@ const handleLinkResolver = (doc) => {
     }
   }
 
-  if (doc.type === 'page') {
+  if (doc.type === 'page' || doc.type === 'services') {
     if (doc.lang === 'en-gb') {
       return (doc.data.parent_page.id ? `/en/${doc.data.parent_page.uid}/${doc.uid}/` : `/en/${doc.uid}/`)
     }
@@ -52,20 +52,6 @@ const handleLinkResolver = (doc) => {
       return (doc.data.parent_page.id ? `/pt/${doc.data.parent_page.uid}/${doc.uid}/` : `/pt/${doc.uid}/`)
     }
   }
-
-  // if (doc.type === 'work') {
-  //   return `/${doc.lang}/${doc.uid}/`;
-  // }
-
-  // if (doc.type === 'work_page') {
-  // return (doc.data.parent_page.id ? `/${doc.lang}/${doc.data.parent_page.uid}/${doc.uid}/` : `/${doc.lang}/${doc.uid}/`)
-  // }
-
-  // if (doc.type === 'team') {
-  //   if (doc.lang === 'pt-pt') {
-  //     return `/pt/${doc.uid}/`;
-  //   }
-  // }
 
   if (doc.type === 'contacts') {
     if (doc.lang === 'en-gb') {
@@ -75,14 +61,6 @@ const handleLinkResolver = (doc) => {
       return `/pt/${doc.uid}/`;
     }
   }
-
-  // if (doc.type === 'services') {
-  //   return `/${doc.lang}/${doc.uid}/`;
-  // }
-
-  // if (doc.type === 'service_page') {
-  //   return (doc.data.parent_page.id ? `/${doc.lang}/${doc.data.parent_page.uid}/${doc.uid}/` : `/${doc.lang}/${doc.uid}/`)
-  // }
 
   return `/en/`;
 };
@@ -123,8 +101,7 @@ const handleRequest = async (api, lang) => {
   const preloader = await api.getSingle('preloader', { lang });
   const assets = [];
   const { results: calendar } = await api.query(Prismic.Predicates.at('document.type', 'school_calendar'), {
-    lang,
-    // orderings: '[my.school_calendar.event_date asc]'
+    lang
   })
 
 
@@ -237,7 +214,6 @@ app.get('/en/:uid/', async (req, res) => {
   const page = await api.getByUID('page', uid, { lang });
   // const services = await api.getByUID('services', uid, { lang });
   // const team = await api.getByUID('team', uid, { lang });
-  // const work = await api.getByUID('work', uid, { lang });
 
 
   if (page) {
@@ -312,8 +288,6 @@ app.get('/pt/:uid/', async (req, res) => {
   const page = await api.getByUID('page', uid, { lang });
   // const services = await api.getByUID('services', uid, { lang });
   // const team = await api.getByUID('team', uid, { lang });
-  // const work = await api.getByUID('work', uid, { lang });
-
 
   if (page) {
     if (page.data.parent_page.uid) {
@@ -385,33 +359,7 @@ app.get('/en/:parent_page/:uid/', async (req, res) => {
 
   // const _404 = await api.getSingle('404', { lang });
   // const service_page = await api.getByUID('service_page', uid, { lang });
-  // const work_page = await api.getByUID('work_page', uid, { lang });
   const page = await api.getByUID('page', uid, { lang });
-
-
-  // else if (work_page) {
-  //   altLangs = work_page.alternate_languages
-  //   meta = work_page.data.seo[0]
-
-  //   const { results: parent_en } = await api.query(Prismic.Predicates.at('document.type', 'work_page'), { lang: "en-gb" })
-  //   const { results: parent_pt } = await api.query(Prismic.Predicates.at('document.type', 'work_page'), { lang: "pt-pt" })
-  //   const { results: globals } = await api.query(Prismic.Predicates.at('document.type', 'globals'), { lang })
-
-
-  //   console.log(globals)
-
-  //   res.render('pages/work_page', {
-  //     ...defaults,
-  //     _404,
-  //     altLangs,
-  //     globals,
-  //     lang,
-  //     meta,
-  //     parent_en,
-  //     parent_pt,
-  //     work_page,
-  //   });
-  // }
 
   if (page) {
     altLangs = page.alternate_languages
@@ -476,33 +424,8 @@ app.get('/pt/:parent_page/:uid/', async (req, res) => {
 
   // const _404 = await api.getSingle('404', { lang });
   // const service_page = await api.getByUID('service_page', uid, { lang });
-  // const work_page = await api.getByUID('work_page', uid, { lang });
   const page = await api.getByUID('page', uid, { lang });
 
-
-  // else if (work_page) {
-  //   altLangs = work_page.alternate_languages
-  //   meta = work_page.data.seo[0]
-
-  //   const { results: parent_en } = await api.query(Prismic.Predicates.at('document.type', 'work_page'), { lang: "en-gb" })
-  //   const { results: parent_pt } = await api.query(Prismic.Predicates.at('document.type', 'work_page'), { lang: "pt-pt" })
-  //   const { results: globals } = await api.query(Prismic.Predicates.at('document.type', 'globals'), { lang })
-
-
-  //   console.log(globals)
-
-  //   res.render('pages/work_page', {
-  //     ...defaults,
-  //     _404,
-  //     altLangs,
-  //     globals,
-  //     lang,
-  //     meta,
-  //     parent_en,
-  //     parent_pt,
-  //     work_page,
-  //   });
-  // }
 
   if (page) {
     altLangs = page.alternate_languages

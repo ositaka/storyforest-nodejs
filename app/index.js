@@ -9,8 +9,6 @@ import Preloader from 'components/Preloader';
 
 import Intro from 'pages/Intro';
 import Home from 'pages/Home';
-// import Work from 'pages/Work';
-// import WorkPage from 'pages/WorkPage';
 import Team from 'pages/Team';
 import Services from 'pages/Services';
 import ServicePage from 'pages/ServicePage';
@@ -65,8 +63,6 @@ class App {
     this.pages = {
       intro: new Intro(),
       home: new Home(),
-      // work: new Work(),
-      // work_page: new WorkPage(),
       team: new Team(),
       services: new Services(),
       service_page: new ServicePage(),

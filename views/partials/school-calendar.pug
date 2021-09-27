@@ -1,0 +1,25 @@
+//- - const calendar_events = [{ pr: { ed: "2021-10-22", et: [ { text: "xx"} ]}}, { pr: { ed: "2021-10-23", et: [ { text: "yy"} ]}}, { pr: { ed: "2021-12-25", et: [ { text: "Xmas"} ]}}, { pr: { ed: "2022-01-01", et: [ { text: "New Year's Day"} ]}} ];
+- const getYear = event => event.event_date.split("-")[0];
+- const getMonth = event => Number(event.event_date.split("-", 2).pop());
+- const getDay = event => event.event_date.split("-")[2];
+
+- const months = lang === 'en-gb' ?  ['dummy','January','February','March','April','May','June','July','August','September','October','November','Dezembro'] : ['ficticio','Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro']
+
+- let current = { year: getYear(calendar_events[0]), month: 0 };
+- const incCurrent = () => { 
+-   if (current.month==12) {
+-     current.month = 1; current.year++;
+-   } else current.month++;
+- }
+- for (let i=0; i<calendar_events.length; i++) {
+-   let month = getMonth(calendar_events[i]);
+-   if (current.month != month)
+-     while (current.month != month) incCurrent(current);
+  br
+  strong #{months[month]} #{getYear(calendar_events[i])}
+  .events__group(data-month=months[month] data-year=getYear(calendar_events[i]))
+    p #{getDay(calendar_events[i])} - #{calendar_events[i].event_title}
+    while i<calendar_events.length-1 && getMonth(calendar_events[i+1])==current.month
+      - i++;
+      p #{getDay(calendar_events[i])} - #{calendar_events[i].event_title}
+- }

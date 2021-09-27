@@ -16,8 +16,9 @@ block content
         - const getYear = event => event.event_date.split("-")[0];
         - const getMonth = event => Number(event.event_date.split("-", 2).pop());
         - const getDay = event => event.event_date.split("-")[2];
-        - const months = ['dummy','jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
-
+        
+        - const months = lang === 'en-gb' ?  ['dummy','January','February','March','April','May','June','July','August','September','October','November','Dezembro'] : ['ficticio','Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro']
+        
         -  let current = { year: getYear(calendar_events[0]), month: 0 };
         - const incCurrent = () => { 
         -   if (current.month==12) {
@@ -28,7 +29,8 @@ block content
         -   let month = getMonth(calendar_events[i]);
         -   if (current.month != month)
         -     while (current.month != month) incCurrent(current);
-          strong New Month #{months[month]}-#{getYear(calendar_events[i])}
+          br
+          strong #{months[month]} #{getYear(calendar_events[i])}
           .events__group(data-month=months[month] data-year=getYear(calendar_events[i]))
             p #{getDay(calendar_events[i])} - #{calendar_events[i].event_title}
             while i<calendar_events.length-1 && getMonth(calendar_events[i+1])==current.month
