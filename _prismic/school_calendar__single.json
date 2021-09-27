@@ -1,0 +1,37 @@
+{
+  "Main": {
+    "uid": {
+      "type": "UID",
+      "config": {
+        "label": "UID"
+      }
+    },
+    "title": {
+      "type": "StructuredText",
+      "config": {
+        "single": "heading1",
+        "label": "Title"
+      }
+    },
+    "events": {
+      "type": "Group",
+      "config": {
+        "fields": {
+          "event_date": {
+            "type": "Date",
+            "config": {
+              "label": "Event Date"
+            }
+          },
+          "event_title": {
+            "type": "Text",
+            "config": {
+              "label": "Event Title"
+            }
+          }
+        },
+        "label": "Events"
+      }
+    }
+  }
+}

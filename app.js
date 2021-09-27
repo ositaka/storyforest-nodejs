@@ -121,8 +121,20 @@ const handleRequest = async (api, lang) => {
   const footer = await api.getSingle('footer', { lang });
   const navigation = await api.getSingle('navigation', { lang });
   const preloader = await api.getSingle('preloader', { lang });
-
   const assets = [];
+  const { results: calendar } = await api.query(Prismic.Predicates.at('document.type', 'school_calendar'), {
+    lang,
+    // orderings: '[my.school_calendar.event_date asc]'
+  })
+
+
+  calendar_events = calendar[0].data.events
+
+  calendar_events.sort(function (a, b) {
+    return new Date(a.event_date) - new Date(b.event_date)
+  })
+
+  console.log(calendar_events)
 
   intro.data.gallery.forEach((item) => {
     assets.push(item.image.url);
@@ -130,6 +142,7 @@ const handleRequest = async (api, lang) => {
 
   return {
     assets,
+    calendar_events,
     intro,
     footer,
     navigation,
