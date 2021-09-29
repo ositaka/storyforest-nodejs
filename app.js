@@ -144,10 +144,6 @@ app.get('/en/', async (req, res) => {
     meta = home.data.seo[0]
 
     // const { results: globals } = await api.query(Prismic.Predicates.at('document.type', 'globals'), { lang })
-    // const { results: packs } = await api.query(Prismic.Predicates.at('document.type', 'pack'), {
-    //   lang,
-    //   orderings: '[my.pack.homepage_order]'
-    // })
 
     res.render('pages/home', {
       ...defaults,
@@ -156,7 +152,6 @@ app.get('/en/', async (req, res) => {
       lang,
       meta,
       home,
-      // packs
     });
 
   }
@@ -180,10 +175,6 @@ app.get('/pt/', async (req, res) => {
     meta = home.data.seo[0]
 
     // const { results: globals } = await api.query(Prismic.Predicates.at('document.type', 'globals'), { lang })
-    // const { results: packs } = await api.query(Prismic.Predicates.at('document.type', 'pack'), {
-    //   lang,
-    //   orderings: '[my.pack.homepage_order]'
-    // })
 
     res.render('pages/home', {
       ...defaults,
@@ -192,7 +183,6 @@ app.get('/pt/', async (req, res) => {
       lang,
       meta,
       home,
-      // packs
     });
 
   }

@@ -6,6 +6,7 @@ import Detection from 'classes/Detection'
 import Footer from 'components/Footer';
 import Navigation from 'components/Navigation';
 import Preloader from 'components/Preloader';
+import SchoolCalendar from 'components/SchoolCalendar';
 
 import Intro from 'pages/Intro';
 import Home from 'pages/Home';
@@ -24,6 +25,7 @@ class App {
     this.createNavigation();
     this.createFooter();
     this.createPages();
+    this.createSchoolCalendar();
 
     this.addEventListeners();
     this.addLinkListeners();
@@ -74,6 +76,13 @@ class App {
     this.page.create();
   }
 
+  createSchoolCalendar() {
+
+    this.schoolCalendar = new SchoolCalendar({
+      schoolCalendar: this.schoolCalendar
+    });
+  }
+
   /**
    * Events.
    */
@@ -113,6 +122,7 @@ class App {
       const siteurl = div.querySelector('.navigation__link').href;
       const footerDiv = div.querySelector('.footer').innerHTML;
       const seo_title = div.querySelector('title').innerHTML;
+      const calendarEvents = div.querySelector('.school_calendar__events').innerHTML;
 
       this.template = divContent.getAttribute('data-template');
       this.langEN = langEN;
@@ -122,8 +132,10 @@ class App {
       this.siteurl = siteurl;
       this.footerDiv = footerDiv;
       this.seo_title = seo_title;
+      this.calendarEvents = calendarEvents;
 
       this.navigation.onChange(this.template, this.langEN, this.langPT, this.menu, this.menuLinks, this.siteurl, this.seo_title);
+      this.schoolCalendar.onChange(this.calendarEvents);
 
       this.footer.onChange(this.footerDiv);
 
