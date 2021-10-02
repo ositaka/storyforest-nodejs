@@ -15,6 +15,7 @@
 
     - const months = lang === 'en-gb' ?  ['dummy','January','February','March','April','May','June','July','August','September','October','November','Dezembro'] : ['ficticio','Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro']
 
+    - let currentMonth = new Date().getMonth()
     - let current = { year: getYear(calendar_events[0]), month: 0 };
     - const incCurrent = () => { 
     -   if (current.month==12) {
@@ -25,19 +26,11 @@
     -   let month = getMonth(calendar_events[i]);
     -   if (current.month != month)
     -     while (current.month != month) incCurrent(current);
-      //- strong #{months[month]} #{getYear(calendar_events[i])}
-      if (i === 0)
-        .school_calendar__events__group(data-month=months[month] data-year=getYear(calendar_events[i]) data-active="true")
-          p #{getDay(calendar_events[i])} - #{calendar_events[i].event_title}
-          while i<calendar_events.length-1 && getMonth(calendar_events[i+1])==current.month
-            - i++;
-            p #{getDay(calendar_events[i])} - #{calendar_events[i].event_title}
-      else
-        .school_calendar__events__group(data-month=months[month] data-year=getYear(calendar_events[i]))
-          p #{getDay(calendar_events[i])} - #{calendar_events[i].event_title}
-          while i<calendar_events.length-1 && getMonth(calendar_events[i+1])==current.month
-            - i++;
-            p #{getDay(calendar_events[i])} - #{calendar_events[i].event_title}
+    .school_calendar__events__group(data-month=months[month] data-year=getYear(calendar_events[i]))
+      p #{getDay(calendar_events[i])} - #{calendar_events[i].event_title}
+      while i<calendar_events.length-1 && getMonth(calendar_events[i+1])==current.month
+        - i++;
+        p #{getDay(calendar_events[i])} - #{calendar_events[i].event_title}
     - }
 
   button.school_calendar__toggle School Calendar

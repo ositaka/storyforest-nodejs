@@ -122,7 +122,7 @@ class App {
       const siteurl = div.querySelector('.navigation__link').href;
       const footerDiv = div.querySelector('.footer').innerHTML;
       const seo_title = div.querySelector('title').innerHTML;
-      const calendarEvents = div.querySelector('.school_calendar__events').innerHTML;
+      const calendar = div.querySelector('.school_calendar__events').innerHTML;
 
       this.template = divContent.getAttribute('data-template');
       this.langEN = langEN;
@@ -132,10 +132,10 @@ class App {
       this.siteurl = siteurl;
       this.footerDiv = footerDiv;
       this.seo_title = seo_title;
-      this.calendarEvents = calendarEvents;
+      this.calendar = calendar;
 
       this.navigation.onChange(this.template, this.langEN, this.langPT, this.menu, this.menuLinks, this.siteurl, this.seo_title);
-      this.schoolCalendar.onChange(this.calendarEvents);
+      this.schoolCalendar.onChange(this.calendar);
 
       this.footer.onChange(this.footerDiv);
 

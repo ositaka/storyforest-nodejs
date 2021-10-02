@@ -1,10 +1,8 @@
-import GSAP from 'gsap'
-
 import Component from 'classes/Component'
 import { mapEach } from 'utils/dom'
 
 export default class Preloader extends Component {
-    constructor({ calendarEvents }) {
+    constructor({ calendar }) {
         super({
             element: '.school_calendar',
             elements: {
@@ -19,10 +17,12 @@ export default class Preloader extends Component {
 
         this.createCalendar()
 
-        this.onChange(calendarEvents)
+        this.onChange(calendar)
     }
 
     createCalendar() {
+        this.checkCurrentMonth()
+
         const delay = 400
 
         this.elements.toggle.addEventListener('click', () => {
@@ -39,7 +39,6 @@ export default class Preloader extends Component {
 
             checkPrevNext()
         })
-
 
         this.elements.prev.addEventListener('click', () => {
             const currentEl = document.querySelector('.school_calendar__events [data-active="true"]')
@@ -64,7 +63,6 @@ export default class Preloader extends Component {
 
             checkPrevNext()
         })
-
 
         this.elements.next.addEventListener('click', () => {
             const currentEl = document.querySelector('.school_calendar__events [data-active="true"]')
@@ -119,9 +117,33 @@ export default class Preloader extends Component {
 
     }
 
-    onChange(calendarEvents) {
-        if (typeof calendarEvents !== 'undefined') {
-            this.elements.events.innerHTML = calendarEvents
+    checkCurrentMonth() {
+        if (document.documentElement.lang === 'en-gb') {
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+            this.setActiveMonth(monthNames)
+        }
+        else if (document.documentElement.lang === 'pt-pt') {
+            const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
+            this.setActiveMonth(monthNames)
+        }
+
+    }
+
+    setActiveMonth(monthNames) {
+        const dateObj = new Date()
+        const monthNumber = dateObj.getMonth()
+        const monthName = monthNames[monthNumber]
+
+        mapEach(this.elements.eventsGroup, element => {
+            if (element.dataset.month === monthName) {
+                element.setAttribute('data-active', 'true')
+            }
+        })
+    }
+
+    onChange(calendar) {
+        if (typeof calendar !== 'undefined') {
+            this.elements.events.innerHTML = calendar
         }
     }
 }
