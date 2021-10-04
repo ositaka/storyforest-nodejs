@@ -90,6 +90,14 @@ export default class Navigation extends Component {
       })
     })
 
+    this.langs.en.addEventListener('click', event => {
+      document.documentElement.lang = 'en-gb'
+    })
+
+    this.langs.pt.addEventListener('click', event => {
+      document.documentElement.lang = 'pt-pt'
+    })
+
     // check current page on window load
     mapEach(this.elements.menuLinks, element => {
       if (window.location.href.replace(/http:\/\/localhost:3000/g, '') === element.getAttribute('href')) {
