@@ -24,65 +24,71 @@ export default class Preloader extends Component {
         this.checkCurrentMonth()
 
         const delay = 400
+        const events = document.querySelector('.school_calendar__events')
+        const eventsGroup = document.querySelectorAll('.school_calendar__events__group')
+        const header = document.querySelector('.school_calendar__header h2')
+        const next = document.querySelector('.school_calendar__next')
+        const prev = document.querySelector('.school_calendar__prev')
+
+        mapEach(eventsGroup, element => {
+            if (element.dataset.active) {
+                element.style.display = 'block'
+                header.innerHTML = `${element.dataset.month} ${element.dataset.year}`
+            } else {
+                element.removeAttribute('style')
+            }
+        })
 
         this.elements.toggle.addEventListener('click', () => {
-
             this.element.classList.toggle('open');
             // body.classList.toggle('opacity');
-
-            mapEach(this.elements.eventsGroup, element => {
-                if (element.dataset.active) {
-                    element.style.display = 'block'
-                    this.elements.header.innerHTML = `${element.dataset.month} ${element.dataset.year}`
-                }
-            })
 
             checkPrevNext()
         })
 
-        this.elements.prev.addEventListener('click', () => {
+        prev.addEventListener('click', () => {
             const currentEl = document.querySelector('.school_calendar__events [data-active="true"]')
             const prevEl = currentEl.previousElementSibling
 
             if (prevEl !== null) {
-                this.elements.prev.style.pointerEvents = 'none'
-                this.elements.events.style.transition = `opacity ${delay}ms ease`
-                this.elements.events.style.opacity = '0'
+                prev.style.pointerEvents = 'none'
+                events.style.transition = `opacity ${delay}ms ease`
+                events.style.opacity = '0'
                 delete currentEl.dataset.active
                 prevEl.setAttribute('data-active', 'true')
 
                 setTimeout(_ => {
-                    this.elements.events.style.opacity = '1'
+                    events.style.opacity = '1'
                     currentEl.style.display = 'none'
                     prevEl.style.display = 'block'
-                    this.elements.prev.style.pointerEvents = 'all'
+                    prev.style.pointerEvents = 'all'
                 }, delay)
 
-                this.elements.header.innerHTML = `${prevEl.dataset.month} ${prevEl.dataset.year}`
+                header.innerHTML = `${prevEl.dataset.month} ${prevEl.dataset.year}`
             }
 
             checkPrevNext()
         })
 
-        this.elements.next.addEventListener('click', () => {
+        next.addEventListener('click', () => {
             const currentEl = document.querySelector('.school_calendar__events [data-active="true"]')
             const nextEl = currentEl.nextElementSibling
 
             if (nextEl !== null) {
-                this.elements.next.style.pointerEvents = 'none'
-                this.elements.events.style.transition = `opacity ${delay}ms ease`
-                this.elements.events.style.opacity = '0'
+                next.style.pointerEvents = 'none'
+                events.style.transition = `opacity ${delay}ms ease`
+                events.style.opacity = '0'
                 delete currentEl.dataset.active
                 nextEl.setAttribute('data-active', 'true')
 
                 setTimeout(_ => {
-                    this.elements.events.style.opacity = '1'
+                    events.style.opacity = '1'
                     currentEl.style.display = 'none'
                     nextEl.style.display = 'block'
-                    this.elements.next.style.pointerEvents = 'all'
+                    next.style.pointerEvents = 'all'
                 }, delay)
 
-                this.elements.header.innerHTML = `${nextEl.dataset.month} ${nextEl.dataset.year}`
+                header.innerHTML = `${nextEl.dataset.month} ${nextEl.dataset.year}`
             }
 
             checkPrevNext()
@@ -114,7 +120,6 @@ export default class Preloader extends Component {
                 }
             }, delay)
         }
-
     }
 
     checkCurrentMonth() {
@@ -126,15 +131,15 @@ export default class Preloader extends Component {
             const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
             this.setActiveMonth(monthNames)
         }
-
     }
 
     setActiveMonth(monthNames) {
         const dateObj = new Date()
+        const eventsGroup = document.querySelectorAll('.school_calendar__events__group')
         const monthNumber = dateObj.getMonth()
         const monthName = monthNames[monthNumber]
 
-        mapEach(this.elements.eventsGroup, element => {
+        mapEach(eventsGroup, element => {
             if (element.dataset.month === monthName) {
                 element.setAttribute('data-active', 'true')
             }
@@ -143,7 +148,9 @@ export default class Preloader extends Component {
 
     onChange(calendar) {
         if (typeof calendar !== 'undefined') {
-            this.elements.events.innerHTML = calendar
+            this.element.innerHTML = calendar
+            this.elements.header.innerHTML = ''
+            this.createCalendar()
         }
     }
 }

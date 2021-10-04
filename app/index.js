@@ -77,7 +77,6 @@ class App {
   }
 
   createSchoolCalendar() {
-
     this.schoolCalendar = new SchoolCalendar({
       schoolCalendar: this.schoolCalendar
     });
@@ -122,7 +121,7 @@ class App {
       const siteurl = div.querySelector('.navigation__link').href;
       const footerDiv = div.querySelector('.footer').innerHTML;
       const seo_title = div.querySelector('title').innerHTML;
-      const calendar = div.querySelector('.school_calendar__events').innerHTML;
+      const calendar = div.querySelector('.school_calendar').innerHTML;
 
       this.template = divContent.getAttribute('data-template');
       this.langEN = langEN;
